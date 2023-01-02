@@ -1,9 +1,19 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
 import Homepage from '../components/Homepage';
 import { useAuth } from '../context/AuthContext';
+import Router from 'next/router';
+
 
 export default function Home() {
   const { currentUser } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      Router.push('/journal');
+    }
+  }, []);
+
   return (
     <>
       <Head>

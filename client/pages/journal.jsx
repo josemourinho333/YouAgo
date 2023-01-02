@@ -1,4 +1,5 @@
-import React from 'react';
+import Router from 'next/router';
+import React, { useEffect } from 'react';
 import Dashboard from '../components/Dashboard';
 import Layout from '../components/Dashboard/layout';
 import { useAuth } from '../context/AuthContext';
@@ -6,11 +7,11 @@ import { useAuth } from '../context/AuthContext';
 const journal = () => {
   const { currentUser } = useAuth();
 
-  if (!currentUser) {
-    return (
-      <div>Must be logged in</div> 
-    )
-  }
+  useEffect(() => {
+    if (!currentUser) {
+      Router.push('/login');
+    }
+  }, [])
 
   return (
     <Dashboard/>
