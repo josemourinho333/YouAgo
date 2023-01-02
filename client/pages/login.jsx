@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { GoogleAuthProvider } from 'firebase/auth';
+import Router from 'next/router';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -8,6 +9,14 @@ const Login = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [loggingIn, setLoggingIn] = useState(true);
+
+  const { login, signup, googleLogin, currentUser } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      Router.push('/journal');
+    }
+  }, [])
 
   //setEmail handler 
   const setEmailHandler = (e) => {
@@ -24,8 +33,7 @@ const Login = () => {
     setConfirmPassword(e.target.value);
   };
 
-  const { login, signup, googleLogin, currentUser } = useAuth();
-  console.log('current user', currentUser);
+  
 
   //google login handler
   const googleLoginHandler = async(e) => {
