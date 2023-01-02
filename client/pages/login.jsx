@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,18 +24,37 @@ const Login = () => {
     setConfirmPassword(e.target.value);
   };
 
+  const { login, signup, googleLogin, currentUser } = useAuth();
+  console.log('current user', currentUser);
+
+  //google login handler
+  const googleLoginHandler = async(e) => {
+    e.preventDefault();
+    const provider = new GoogleAuthProvider();
+    try {
+      await googleLogin(provider);
+    } catch (err) {
+      setError('Something went wrong');
+    }
+    
+    return;
+  }
+
   //login button handler
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
     console.log('hello tryign to log in', email, password);
+    if (!email || !password) {
+      setError('Please enter email and password.');
+      return;
+    }
     if (loggingIn) {
-      if (!email || !password) {
-        setError('Please enter email and password');
-        return;
+      try {
+        await login(email, password);
+      } catch (err) {
+        setError('Incorrect email or password');
       }
-
-      setError(null);
-      console.log('happy path for login');
+      return 
     };
 
     if (!loggingIn) {
@@ -41,8 +62,7 @@ const Login = () => {
         setError('Passwords do not match');
         return;
       }
-      setError(null);
-      console.log('happy path for register');
+      await signup(email, password);
     };
   };
 
@@ -80,7 +100,7 @@ const Login = () => {
             <div className="form-control mt-6 gap-y-3">
               {error && <div className="mb-1 text-error">{error}</div>}
               <button className="btn btn-info" onClick={(e) => loginHandler(e)}>{loggingIn ? "Login" : "Sign Up"}</button>
-              <button className="btn">{loggingIn ? "Sign in with Google" : "Sign up with Google"}</button>
+              <button className="btn" onClick={(e) => googleLoginHandler(e)}>{loggingIn ? "Sign in with Google" : "Sign up with Google"}</button>
             </div>
             <div className="divider">OR</div> 
             <div className="form-control">
