@@ -23,10 +23,9 @@ const layout = ({children}) => {
         <ul className="menu p-4 w-80 bg-base-300 text-base-content relative">
           {/* <!-- Sidebar content here --> */}
           <li className="bg-base-300 font-black text-2xl hidden z-0 lg:block lg:z-10 lg:sticky lg:top-0"><Link href="/journal">You&rsquo;re <span class="text-secondary">Ago</span></Link></li>
-          <li><a>Sidebar Item 1</a></li>
-          <li><a>Sidebar Item 2</a></li>
+          <li><Link href="/journal/write">Write</Link></li>
+          <li><Link href="/journal/entries">Entries</Link></li>
         </ul>
-      
       </div>
     </div>
   )
