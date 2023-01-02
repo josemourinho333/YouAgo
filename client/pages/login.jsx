@@ -41,6 +41,7 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     try {
       await googleLogin(provider);
+      Router.push('/journal');
     } catch (err) {
       setError('Something went wrong');
     }
@@ -59,6 +60,7 @@ const Login = () => {
     if (loggingIn) {
       try {
         await login(email, password);
+        Router.push('/journal');
       } catch (err) {
         setError('Incorrect email or password');
       }
@@ -71,6 +73,7 @@ const Login = () => {
         return;
       }
       await signup(email, password);
+      Router.push('/journal');
     };
   };
 
