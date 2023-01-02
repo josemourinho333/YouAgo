@@ -12,7 +12,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-row gap-5 justify-center">
             <button className="btn btn-primary"><Link href="/journal">Get Started</Link></button>
-            <button className="btn btn-primary"><Link href="/journal">Log In</Link></button>
+            <button className="btn btn-primary"><Link href="/login">Log In</Link></button>
           </div>
         </div>
       </div>
