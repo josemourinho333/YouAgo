@@ -33,7 +33,9 @@ const layout = ({children}) => {
           <div className="flex-1 px-2 mx-2 font-black text-2xl"><Link href="/journal">You&rsquo;re <span className="text-secondary">Ago</span></Link></div>
         </div>
         {/* <!-- Page content here --> */}
-        {children}
+        <div className="flex flex-col min-h-screen">
+          {children}
+        </div>
       </div> 
       <div className="drawer-side relative">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 

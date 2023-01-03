@@ -4,7 +4,7 @@ import Dashboard from '../components/Dashboard';
 import Layout from '../components/Dashboard/layout';
 import { useAuth } from '../context/AuthContext';
 
-const journal = () => {
+const Journal = () => {
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -18,9 +18,9 @@ const journal = () => {
   )
 }
 
-export default journal;
+export default Journal;
 
-journal.getLayout = function getLayout(page) {
+Journal.getLayout = function getLayout(page) {
   return (
     <Layout>
       {page}
