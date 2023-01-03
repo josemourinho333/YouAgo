@@ -42,8 +42,6 @@ const layout = ({children}) => {
           <li className="bg-base-300 font-black text-2xl hidden z-0 lg:block lg:z-10 lg:sticky lg:top-0"><Link href="/journal">You&rsquo;re <span className="text-secondary">Ago</span></Link></li>
           <li><Link href="/journal/write">Write</Link></li>
           <li><Link href="/journal/entries">Entries</Link></li>
-          <li><Link href="/journal/settings">Settings</Link></li>
-          <li>Sign Out</li>
           <li className="bg-base-300 font-semibold text-lg fixed z-10 bottom-0 flex flex-row w-full left-0 right-0">
             <Link href="/journal/settings" className="basis-1/2 justify-center"><HiAdjustments/>Settings</Link>
             <button className="basis-1/2 justify-center" onClick={(e) => logoutHandler(e)}>Sign Out<HiLogout/></button>
