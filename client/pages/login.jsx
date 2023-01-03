@@ -72,8 +72,14 @@ const Login = () => {
         setError('Passwords do not match');
         return;
       }
-      await signup(email, password);
-      Router.push('/journal');
+
+      try {
+        await signup(email, password);
+        Router.push('/journal');
+      } catch (err) {
+        setError('Problem with registeration.');
+        return;
+      }
     };
   };
 
