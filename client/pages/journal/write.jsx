@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import React, { useEffect } from 'react';
 import Layout from '../../components/Dashboard/layout';
+import WriteIndex from '../../components/Write';
 import { useAuth } from '../../context/AuthContext';
 
 const Write = () => {
@@ -14,7 +15,7 @@ const Write = () => {
   
 
   return (
-    <div>Write</div>
+    <WriteIndex/>
   )
 }
 
