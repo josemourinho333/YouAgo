@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Layout from '../../components/Dashboard/layout';
 import { useAuth } from '../../context/AuthContext';
 
-const Entries = () => {
+const Settings = () => {
   const { currentUser } = useAuth();
 
   useEffect(() => {
@@ -11,15 +11,15 @@ const Entries = () => {
       Router.push('/login');
     }
   }, []);
-  
+
   return (
-    <div>entries</div>
+    <div>Settings</div>
   )
 }
 
-export default Entries;
+export default Settings;
 
-Entries.getLayout = function getLayout(page) {
+Settings.getLayout = function getLayout(page) {
   return (
     <Layout>
       {page}

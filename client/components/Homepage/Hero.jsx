@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 const Hero = () => {
@@ -11,8 +11,7 @@ const Hero = () => {
             Write to your highest future self and see how far you&rsquo;ve come a year ago. A free journaling app to track your day and your mood.<br/>
           </p>
           <div className="flex flex-row gap-5 justify-center">
-            <button className="btn btn-primary"><Link href="/journal">Get Started</Link></button>
-            <button className="btn btn-primary"><Link href="/journal">Log In</Link></button>
+            <button className="btn btn-primary"><Link href="/login">Get Started</Link></button>
           </div>
         </div>
       </div>
