@@ -26,7 +26,7 @@ const Layout = ({children}) => {
   }).map((entry) => {
     return (
       <li key={entry.date}>
-        <Link href="/journal/entries" className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
+        <Link href={`/journal/entries/${entry.date}`} className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
           <div className="flex flex-col justify-center items-center">
             <div className="font-normal text-md">{new Date(entry.date).toDateString().split(' ')[0]}</div>
             <div className="font-bold text-xl">{new Date(entry.date).toDateString().split(' ')[2]}</div>
