@@ -18,7 +18,7 @@ export function AuthProvider({children}) {
     mood: '',
     grateful: ['', '', ''],
   });
-  const [journalEntries, setJournalEntries] = useState(null);
+  const [journalEntries, setJournalEntries] = useState([]);
 
   const userInfo = useRef();
 
@@ -74,7 +74,9 @@ export function AuthProvider({children}) {
 
   //handle journal submission
   const finishJournal = () => {
-    console.log('journaling finished');
+    console.log('journaling finished', journalEntry);
+    const updatedEntries = [journalEntry, ...journalEntries];
+    setJournalEntries([...updatedEntries]);
   };
   
 
