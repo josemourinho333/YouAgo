@@ -19,6 +19,8 @@ export function AuthProvider({children}) {
     grateful: ['', '', ''],
   });
   const [journalEntries, setJournalEntries] = useState([]);
+  const [emotion, setEmotion] = useState('');
+  const [emotions, setEmotions] = useState(null);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -49,6 +51,7 @@ export function AuthProvider({children}) {
     return unsubscribe;
   }, []);
 
+  // fetching entries data
   useEffect(() => {
     const fetchEntries = async () => {
       if (currentUser) {
@@ -71,6 +74,32 @@ export function AuthProvider({children}) {
     }
     fetchEntries();
   }, [currentUser]);
+
+  //fetching emotions data
+  useEffect(() => {
+    const fetchEmotions = async () => {
+      if (currentUser) {
+        try {
+          const docRef = doc(db, 'emotions', "master");
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const allEmotions = docSnap.data();
+            const formattedEmotions = Object.keys(allEmotions).map((emotion) => {
+              const emotionObj = {
+                [emotion]: allEmotions[emotion],
+              };
+              return emotionObj;
+            });
+            setEmotions([...formattedEmotions]);
+          }
+        } catch (err) {
+          setError('Failed to fetch emotions. Try again');
+        }
+      }
+    }
+
+    fetchEmotions();
+  }, [currentUser])
 
   //Journaling State + Functions
   //handle diary input
@@ -124,7 +153,10 @@ export function AuthProvider({children}) {
     handleMood,
     finishJournal,
     journalEntry,
-    journalEntries
+    journalEntries,
+
+    emotion,
+    emotions,
   }
 
   return (
