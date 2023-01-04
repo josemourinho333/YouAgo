@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import Diary from './Diary';
 import Grateful from './Grateful';
 import Mood from './Mood';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { useAuth } from '../../context/AuthContext';
 
 const WriteIndex = () => {
@@ -23,7 +21,6 @@ const WriteIndex = () => {
           <Grateful />
         </div>  
       </div>
-
     </div>
   )
 }

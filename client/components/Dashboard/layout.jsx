@@ -21,13 +21,15 @@ const Layout = ({children}) => {
   };
 
   // render list of entries
-  const listOfEntries = journalEntries.map((entry) => {
+  const listOfEntries = journalEntries.sort((a,b) => {
+    return new Date(b.date) - new Date(a.date);
+  }).map((entry) => {
     return (
       <li key={entry.date}>
         <Link href="/journal/entries" className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
           <div className="flex flex-col justify-center items-center">
-            <div className="font-normal text-md">{entry.date.toDateString().split(' ')[0]}</div>
-            <div className="font-bold text-xl">{entry.date.toDateString().split(' ')[2]}</div>
+            <div className="font-normal text-md">{entry.date}</div>
+            {/* <div className="font-bold text-xl">{entry.date.split(' ')[2]}</div> */}
           </div>
           <div className="text-left flex-1">{entry.diary.substring(0, 30)}...</div>
           <button className="btn btn-ghost p-0"><HiDotsVertical/></button>

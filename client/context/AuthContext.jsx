@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -13,12 +13,14 @@ export function AuthProvider({children}) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [journalEntry, setJournalEntry] = useState({
-    date: new Date(),
+    date: '',
     diary: '',
     mood: '',
     grateful: ['', '', ''],
   });
   const [journalEntries, setJournalEntries] = useState([]);
+  const [fetchLoading, setFetchLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const userInfo = useRef();
 
@@ -47,11 +49,35 @@ export function AuthProvider({children}) {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const fetchEntries = async () => {
+      if (currentUser) {
+        try {
+          const docRef = doc(db, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const allEntries = docSnap.data().entries;
+            const data = Object.keys(allEntries).map((entry) => {
+              return allEntries[entry];
+            })
+            setJournalEntries([...data]);
+          }
+        } catch (err) {
+          setError('Failed to load entries');
+        } finally {
+          setFetchLoading(false);
+        }
+      }
+    }
+    fetchEntries();
+  }, [currentUser]);
+
   //Journaling State + Functions
   //handle diary input
   const handleDiary = (e) => {
     setJournalEntry((prev) => ({
       ...prev,
+      date: new Date().toISOString(),
       diary: e.target.value,
     }));
   };
@@ -63,6 +89,7 @@ export function AuthProvider({children}) {
 
     setJournalEntry((prev) => ({
       ...prev,
+      date: new Date().toISOString(),
       grateful: [...updatedGrateful],
     }));
   };
@@ -77,14 +104,12 @@ export function AuthProvider({children}) {
     const updatedEntries = [journalEntry, ...journalEntries];
     setJournalEntries([...updatedEntries]);
     const userRef = doc(db, 'users', currentUser.uid);
-    const newKey = journalEntry.date.toJSON();
     await setDoc(userRef, {
       'entries': {
-        [newKey]: journalEntry
+        [journalEntry.date]: journalEntry
       }
     }, {merge: true});
   };
-  
 
   const value = {
     currentUser,
