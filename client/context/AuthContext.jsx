@@ -125,7 +125,10 @@ export function AuthProvider({children}) {
 
   // handle moood
   const handleMood = (mood) => {
-    console.log('handling mood', mood);
+    setJournalEntry((prev) => ({
+      ...prev,
+      mood
+    }))
   };
 
   //handle journal submission

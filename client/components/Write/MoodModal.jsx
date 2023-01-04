@@ -4,9 +4,9 @@ import MoodCategory from './MoodCategory';
 import MoodItems from './MoodItems';
 import { HiOutlineChevronLeft } from 'react-icons/hi';
 
-const MoodModal = () => {
+const MoodModal = ({openingModal, setOpeningModal}) => {
   const [selected, setSelected] = useState(null);
-  const { emotions, handleMood } = useAuth();
+  const { emotions } = useAuth();
 
   // set state on category clicked
   const handleCategorySelect = (emoCat, emoItems) => {
@@ -23,8 +23,23 @@ const MoodModal = () => {
 
   // handle final mood and claer out state to close modal
   useEffect(() => {
-    const closeModalBtn = document.getElementById('')
+    const closeModalBtn = document.getElementById('close-mood-modal');
+    const moodModal = document.getElementById('mood-modal');
 
+    const closeModal = () => {
+      if (moodModal.classList.contains('modal-open')) {
+        moodModal.classList.remove("modal-open");
+        setOpeningModal('');
+      } else {
+        return;
+      }
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    return () => {
+      closeModalBtn.removeEventListener('click', closeModal);
+    }
   }, [])
 
   const emotionsRender = emotions?.map((emotion, index) => {
@@ -43,6 +58,8 @@ const MoodModal = () => {
       <MoodItems
         key={index}
         name={item}
+        setSelected={setSelected}
+        setOpeningModal={setOpeningModal}
       />
     )
   });
@@ -50,10 +67,10 @@ const MoodModal = () => {
   return (
     <>
       <input type="checkbox" id="set-mood" className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
+      <div id="mood-modal" className={`modal modal-bottom sm:modal-middle ${openingModal}`}>
         <div className="modal-box relative">
           {selected && <label htmlFor="go-back" className="btn btn-sm btn-circle absolute left-2 top-2" onClick={handleClearCat}><HiOutlineChevronLeft/></label>}
-          <label id="close-mood-modal" htmlFor="set-mood" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+          <label id="close-mood-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
           <div className="flex flex-col gap-y-7">
             <h3 className="font-extrabold text-2xl lg:text-5xl text-neutral text-center">I&rsquo;m feeling...</h3>
             <div className="flex flex-row flex-wrap gap-5 w-full justify-center items-center">
@@ -62,9 +79,9 @@ const MoodModal = () => {
                 : emotionItemsRender}
             </div>
           </div>
-          <div className="modal-action">
+          {/* <div className="modal-action">
             <label htmlFor="set-mood" className="btn btn-primary btn-sm md:btn-md ">Select</label>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
