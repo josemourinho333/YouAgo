@@ -4,7 +4,7 @@ import { HiAdjustments, HiLogout } from 'react-icons/hi';
 import { useAuth } from '../../context/AuthContext';
 import Router from 'next/router';
 
-const layout = ({children}) => {
+const Layout = ({children}) => {
   const { logout, currentUser } = useAuth();
   const [error, setError] = useState(null);
 
@@ -37,7 +37,7 @@ const layout = ({children}) => {
           {children}
         </div>
       </div> 
-      <div className="drawer-side relative">
+      <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
         <ul className="menu p-4 w-80 bg-base-300 text-base-content relative">
           {/* <!-- Sidebar content here --> */}
@@ -62,4 +62,4 @@ const layout = ({children}) => {
   )
 }
 
-export default layout;
+export default Layout;
