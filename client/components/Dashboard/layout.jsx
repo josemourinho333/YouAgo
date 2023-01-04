@@ -28,8 +28,8 @@ const Layout = ({children}) => {
       <li key={entry.date}>
         <Link href="/journal/entries" className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
           <div className="flex flex-col justify-center items-center">
-            <div className="font-normal text-md">{entry.date}</div>
-            {/* <div className="font-bold text-xl">{entry.date.split(' ')[2]}</div> */}
+            <div className="font-normal text-md">{new Date(entry.date).toDateString().split(' ')[0]}</div>
+            <div className="font-bold text-xl">{new Date(entry.date).toDateString().split(' ')[2]}</div>
           </div>
           <div className="text-left flex-1">{entry.diary.substring(0, 30)}...</div>
           <button className="btn btn-ghost p-0"><HiDotsVertical/></button>
