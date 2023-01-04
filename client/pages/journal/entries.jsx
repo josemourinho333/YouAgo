@@ -2,6 +2,7 @@ import Router from 'next/router';
 import React, { useEffect } from 'react';
 import Layout from '../../components/Dashboard/layout';
 import { useAuth } from '../../context/AuthContext';
+import EntriesIndex from '../../components/Entries';
 
 const Entries = () => {
   const { currentUser } = useAuth();
@@ -13,7 +14,7 @@ const Entries = () => {
   }, []);
   
   return (
-    <div>entries</div>
+    <EntriesIndex />
   )
 }
 

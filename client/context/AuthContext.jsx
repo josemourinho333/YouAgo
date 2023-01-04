@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -73,10 +73,16 @@ export function AuthProvider({children}) {
   };
 
   //handle journal submission
-  const finishJournal = () => {
-    console.log('journaling finished', journalEntry);
+  const finishJournal = async () => {
     const updatedEntries = [journalEntry, ...journalEntries];
     setJournalEntries([...updatedEntries]);
+    const userRef = doc(db, 'users', currentUser.uid);
+    const newKey = journalEntry.date.toJSON();
+    await setDoc(userRef, {
+      'entries': {
+        [newKey]: journalEntry
+      }
+    }, {merge: true});
   };
   
 
