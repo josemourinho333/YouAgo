@@ -9,7 +9,7 @@ import Head from 'next/head';
 const Entry = () => {
   const router = useRouter();
   const { date } = router.query;
-  const { currentUser, journalEntries } = useAuth();
+  const { currentUser, journalEntries, deleteJournalEntry } = useAuth();
   const [focusEntry, setFocusEntry] = useState(null);
 
   useEffect(() => {
@@ -37,15 +37,15 @@ const Entry = () => {
     <div className="h-full flex flex-col items-start p-5 gap-y-5">
       <div className="flex flex-row justify-between items-center w-full">
         <h1 className="text-neutral font-bold text-4xl lg:text-6xl">{moment(focusEntry?.date).format('ll')}</h1>
-        <button className="btn btn-sm btn-primary sm:btn-md">Delete</button>
+        <button className="btn btn-sm btn-primary sm:btn-md" onClick={() => deleteJournalEntry(focusEntry.date)}>Delete</button>
       </div>
       <div className="flex flex-col h-full w-full gap-5 lg:flex-row">
         <div className="p-2 font-light basis-8/12 min-h-full text-neutral-content text-xl lg:text-2xl">{focusEntry?.diary}</div>
         <div className="flex flex-col basis-4/12 p-2 gap-y-5">
           <div className="flex-1 flex flex-col min-h-[50vh] items-center justify-center">
             <div className="rounded-lg bg-neutral border-none w-full h-full text-neutral-content font-semibold text-3xl lg:text-5xl normal-case text-center flex justify-center items-center">
-              You felt<br/>
-              {focusEntry?.mood}
+              {!focusEntry?.mood && "You didn't log an emotion"}
+              {focusEntry?.mood && "You felt" + <br/> + focusEntry?.mood}
             </div>
           </div>
           <div className="flex flex-col gap-y-5">

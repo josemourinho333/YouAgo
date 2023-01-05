@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { HiDotsVertical } from 'react-icons/hi';
 
 const Layout = ({children}) => {
-  const { logout, currentUser, journalEntries } = useAuth();
+  const { logout, currentUser, journalEntries, deleteJournalEntry } = useAuth();
   const [error, setError] = useState(null);
 
   //logout handler 
@@ -26,14 +26,19 @@ const Layout = ({children}) => {
   }).map((entry) => {
     return (
       <li key={entry.date}>
-        <Link href={`/journal/entries/${entry.date}`} className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
+        <div className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
           <div className="flex flex-col justify-center items-center">
             <div className="font-normal text-md">{new Date(entry.date).toDateString().split(' ')[0]}</div>
             <div className="font-bold text-xl">{new Date(entry.date).toDateString().split(' ')[2]}</div>
           </div>
-          <div className="text-left flex-1">{entry.diary.substring(0, 30)}...</div>
-          <button className="btn btn-ghost p-0"><HiDotsVertical/></button>
-        </Link>
+          <Link href={`/journal/entries/${entry.date}`} className="text-left flex-1">{entry.diary.substring(0, 30)}...</Link>
+          <div className="dropdown dropdown-bottom dropdown-end">
+            <label tabIndex={entry.date} className="btn btn-ghost p-0 m-1"><HiDotsVertical/></label>
+            <ul tabIndex={entry.date} className="dropdown-content menu p-1 shadow bg-secondary rounded-box w-52">
+              <li onClick={() => deleteJournalEntry(entry.date)} className="p-2">Delete</li>
+            </ul>
+          </div>
+        </div>
       </li>
     )
   })

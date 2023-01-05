@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, deleteField, updateDoc, FieldValue } from 'firebase/firestore';
 
 const AuthContext = React.createContext();
 
@@ -136,11 +136,23 @@ export function AuthProvider({children}) {
     const updatedEntries = [journalEntry, ...journalEntries];
     setJournalEntries([...updatedEntries]);
     const userRef = doc(db, 'users', currentUser.uid);
+    const entryKey = new Date(journalEntry.date).valueOf();
     await setDoc(userRef, {
       'entries': {
-        [journalEntry.date]: journalEntry
+        [entryKey.toString()]: journalEntry
       }
     }, {merge: true});
+  };
+
+  //handle journal delete
+  const deleteJournalEntry = async (entryKey) => {
+    const updatedEntries = journalEntries.filter((entry) => entry.date !== entryKey);
+    setJournalEntries([...updatedEntries]);
+    const userRef = doc(db, 'users', currentUser.uid);
+    const key = new Date(entryKey).valueOf();
+    await updateDoc(userRef, {
+      [`entries.${key.toString()}`]: deleteField()
+    })
   };
 
   const value = {
@@ -155,6 +167,7 @@ export function AuthProvider({children}) {
     handleGrateful,
     handleMood,
     finishJournal,
+    deleteJournalEntry,
     journalEntry,
     journalEntries,
 
