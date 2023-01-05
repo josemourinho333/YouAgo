@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../../components/Dashboard/layout';
 import { useAuth } from '../../../context/AuthContext';
 import moment from 'moment';
+import Head from 'next/head';
 
 const Entry = () => {
   const router = useRouter();
@@ -62,6 +63,9 @@ export default Entry;
 Entry.getLayout = function getLayout(page) {
   return (
     <Layout>
+      <Head>
+        <title>You&rsquo;reAgo - Entry</title>
+      </Head>
       {page}
     </Layout>
   )
