@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc, getDoc, deleteField, updateDoc, FieldValue } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 const AuthContext = React.createContext();
 
@@ -23,7 +24,9 @@ export function AuthProvider({children}) {
   const [emotions, setEmotions] = useState(null);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSuccess, setShowSuccess] = useState('');
 
+  const router = useRouter();
   const userInfo = useRef();
 
   const signup = (email, password) => {
@@ -142,6 +145,14 @@ export function AuthProvider({children}) {
         [entryKey.toString()]: journalEntry
       }
     }, {merge: true});
+    setJournalEntry({
+      date: '',
+      diary: '',
+      grateful: ["", "", ""],
+      mood: ''
+    });
+    router.push('/journal');
+    setShowSuccess('Submission success.');
   };
 
   //handle journal delete
@@ -152,7 +163,14 @@ export function AuthProvider({children}) {
     const key = new Date(entryKey).valueOf();
     await updateDoc(userRef, {
       [`entries.${key.toString()}`]: deleteField()
-    })
+    });
+    router.push('/journal');
+    setShowSuccess('Deleted successfully');
+  };
+
+  //handle when alert close button is clicked
+  const closeAlert = () => {
+    setShowSuccess(false);
   };
 
   const value = {
@@ -173,6 +191,9 @@ export function AuthProvider({children}) {
 
     emotion,
     emotions,
+
+    showSuccess,
+    closeAlert,
   }
 
   return (
