@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { GoogleAuthProvider } from 'firebase/auth';
 import Router from 'next/router';
+import Head from 'next/head';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -90,42 +91,47 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col bg-base-300 h-screen justify-center items-center">
-        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <div className="card-body">
-            <h2 className="card-title font-extrabold text-3xl">{loggingIn ? "Login" : "Sign Up"}</h2>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text lg:text-xl">Email</span>
-              </label>
-              <input value={email} onChange={(e) => setEmailHandler(e)} type="email" placeholder="email" className="input input-bordered w-full" />
-            </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text lg:text-xl">Password</span>
-              </label>
-              <input value={password} onChange={(e) => setPassHandler(e)} type="password" placeholder="password" className="input input-bordered w-full" />
-            </div>
-            { !loggingIn && 
+    <>
+      <Head>
+        <title>You&rsquo;reAgo - Login</title>
+      </Head>
+      <div className="flex flex-col bg-base-300 h-screen justify-center items-center">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card-body">
+              <h2 className="card-title font-extrabold text-3xl">{loggingIn ? "Login" : "Sign Up"}</h2>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text lg:text-xl">Confirm Password</span>
+                  <span className="label-text lg:text-xl">Email</span>
                 </label>
-                <input value={confirmPassword} onChange={(e) => confirmPassHandler(e)} type="password" placeholder="password" className="input input-bordered w-full" />
+                <input value={email} onChange={(e) => setEmailHandler(e)} type="email" placeholder="email" className="input input-bordered w-full" />
               </div>
-            }
-            <div className="form-control mt-6 gap-y-3">
-              {error && <div className="mb-1 text-error">{error}</div>}
-              <button className="btn btn-info" onClick={(e) => loginHandler(e)}>{loggingIn ? "Login" : "Sign Up"}</button>
-              <button className="btn" onClick={(e) => googleLoginHandler(e)}>{loggingIn ? "Sign in with Google" : "Sign up with Google"}</button>
-            </div>
-            <div className="divider">OR</div> 
-            <div className="form-control">
-              <button className="btn btn-accent" onClick={(e) => switchLogInOrSignUp(e)}>{loggingIn ? "Sign Up" : "Log In"}</button>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text lg:text-xl">Password</span>
+                </label>
+                <input value={password} onChange={(e) => setPassHandler(e)} type="password" placeholder="password" className="input input-bordered w-full" />
+              </div>
+              { !loggingIn && 
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text lg:text-xl">Confirm Password</span>
+                  </label>
+                  <input value={confirmPassword} onChange={(e) => confirmPassHandler(e)} type="password" placeholder="password" className="input input-bordered w-full" />
+                </div>
+              }
+              <div className="form-control mt-6 gap-y-3">
+                {error && <div className="mb-1 text-error">{error}</div>}
+                <button className="btn btn-info" onClick={(e) => loginHandler(e)}>{loggingIn ? "Login" : "Sign Up"}</button>
+                <button className="btn" onClick={(e) => googleLoginHandler(e)}>{loggingIn ? "Sign in with Google" : "Sign up with Google"}</button>
+              </div>
+              <div className="divider">OR</div> 
+              <div className="form-control">
+                <button className="btn btn-accent" onClick={(e) => switchLogInOrSignUp(e)}>{loggingIn ? "Sign Up" : "Log In"}</button>
+              </div>
             </div>
           </div>
-        </div>
-    </div>
+      </div>
+    </>
   )
 }
 
