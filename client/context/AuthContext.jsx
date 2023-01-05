@@ -146,6 +146,8 @@ export function AuthProvider({children}) {
 
   //handle journal delete
   const deleteJournalEntry = async (entryKey) => {
+    const updatedEntries = journalEntries.filter((entry) => entry.date !== entryKey);
+    setJournalEntries([...updatedEntries]);
     const userRef = doc(db, 'users', currentUser.uid);
     const key = new Date(entryKey).valueOf();
     await updateDoc(userRef, {
