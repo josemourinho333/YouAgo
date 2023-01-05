@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import { useAuth } from '../../context/AuthContext';
 import MoodModal from './MoodModal';
 
 const Mood = () => {
   const [openingModal, setOpeningModal] = useState('');
+  const { journalEntry } = useAuth();
 
   useEffect(() => {
     const openBtn = document.getElementById('open-mood');
@@ -26,7 +28,15 @@ const Mood = () => {
   return (
     <>
       <div className="flex-1 flex flex-col min-h-[50vh] items-center justify-center">
-        <label id="open-mood" className="btn bg-neutral border-none w-full h-full text-neutral-content font-semibold text-3xl lg:text-5xl normal-case hover:bg-neutral-content hover:text-neutral">How are you feeling today?<br/>+</label>
+        { !journalEntry.mood
+          ? <label id="open-mood" className="btn bg-neutral border-none w-full h-full text-neutral-content font-semibold text-3xl lg:text-5xl normal-case hover:bg-neutral-content hover:text-neutral">
+              How are you feeling today?<br/>+
+            </label>
+          : <label id="open-mood" className="btn bg-neutral border-none w-full h-full text-neutral-content font-semibold text-3xl lg:text-5xl normal-case hover:bg-neutral-content hover:text-neutral">
+              I&rsquo;m feeling...<br/>{journalEntry.mood}
+            </label>
+        }
+        
       </div>
       <MoodModal openingModal={openingModal} setOpeningModal={setOpeningModal}/>
     </>
