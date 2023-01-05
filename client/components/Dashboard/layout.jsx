@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { HiAdjustments, HiLogout } from 'react-icons/hi';
 import { useAuth } from '../../context/AuthContext';
 import Router from 'next/router';
+import { HiDotsVertical } from 'react-icons/hi';
 
-const layout = ({children}) => {
-  const { logout, currentUser } = useAuth();
+const Layout = ({children}) => {
+  const { logout, currentUser, journalEntries } = useAuth();
   const [error, setError] = useState(null);
 
   //logout handler 
@@ -18,6 +19,24 @@ const layout = ({children}) => {
       setError('Something went wrong.');
     }
   };
+
+  // render list of entries
+  const listOfEntries = journalEntries.sort((a,b) => {
+    return new Date(b.date) - new Date(a.date);
+  }).map((entry) => {
+    return (
+      <li key={entry.date}>
+        <Link href={`/journal/entries/${entry.date}`} className="flex flex-row bg-base-100 hover:bg-neutral mb-2 justify-between items-center">
+          <div className="flex flex-col justify-center items-center">
+            <div className="font-normal text-md">{new Date(entry.date).toDateString().split(' ')[0]}</div>
+            <div className="font-bold text-xl">{new Date(entry.date).toDateString().split(' ')[2]}</div>
+          </div>
+          <div className="text-left flex-1">{entry.diary.substring(0, 30)}...</div>
+          <button className="btn btn-ghost p-0"><HiDotsVertical/></button>
+        </Link>
+      </li>
+    )
+  })
 
   return (
     <div className="drawer drawer-mobile">
@@ -33,15 +52,19 @@ const layout = ({children}) => {
           <div className="flex-1 px-2 mx-2 font-black text-2xl"><Link href="/journal">You&rsquo;re <span className="text-secondary">Ago</span></Link></div>
         </div>
         {/* <!-- Page content here --> */}
-        {children}
+        <div className="flex flex-col min-h-screen">
+          {children}
+        </div>
       </div> 
-      <div className="drawer-side relative">
+      <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
         <ul className="menu p-4 w-80 bg-base-300 text-base-content relative">
           {/* <!-- Sidebar content here --> */}
           <li className="bg-base-300 font-black text-2xl hidden z-0 lg:block lg:z-10 lg:sticky lg:top-0"><Link href="/journal">You&rsquo;re <span className="text-secondary">Ago</span></Link></li>
-          <li><Link href="/journal/write">Write</Link></li>
-          <li><Link href="/journal/entries">Entries</Link></li>
+
+          <li><Link href="/journal/write" className="bg-base-100 justify-center items-center text-2xl font-bold hover:bg-neutral my-2">+</Link></li>
+          {listOfEntries}
+
           <li className="bg-base-300 font-semibold text-lg fixed z-10 bottom-0 flex flex-row w-full left-0 right-0">
             <Link href="/journal/settings" className="basis-1/2 justify-center"><HiAdjustments/>Settings</Link>
             <button className="basis-1/2 justify-center" onClick={(e) => logoutHandler(e)}>Sign Out<HiLogout/></button>
@@ -60,4 +83,4 @@ const layout = ({children}) => {
   )
 }
 
-export default layout;
+export default Layout;

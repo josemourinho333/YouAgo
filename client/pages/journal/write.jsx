@@ -11,8 +11,7 @@ const Write = () => {
     if (!currentUser) {
       Router.push('/login');
     }
-  }, [])
-  
+  }, []);
 
   return (
     <WriteIndex/>
