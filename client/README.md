@@ -1,9 +1,8 @@
 You'reAgo is an app where users can register with their email/pass or log in with their Google account via Firebase authentication and start journaling their day, track their emotions and things they are grateful for. Entries are saved in firestore. Entries will then be emailed to you a year after. App is built with Next.js.
 
-# Highly recommend not using the deployed app just yet - I will be able to read your entries. Security and privacy features are coming!
+# Highly recommend not using the deployed app just yet besides for testing purposes, I will be able to see your entries.
 
 ### if you still want to check it out though check it out:
-
 
 
 ## Getting Started
