@@ -31,7 +31,7 @@ const Layout = ({children}) => {
             <div className="font-normal text-md">{new Date(entry.date).toDateString().split(' ')[0]}</div>
             <div className="font-bold text-xl">{new Date(entry.date).toDateString().split(' ')[2]}</div>
           </div>
-          <Link href={`/journal/entries/${entry.date}`} className="text-left flex-1">{entry.diary.substring(0, 30)}...</Link>
+          <Link href={`/journal/entries/${entry.date}`} className="text-left flex-1">{entry.diary?.substring(0, 30)}...</Link>
           <div className="dropdown dropdown-bottom dropdown-end">
             <label tabIndex={entry.date} className="btn btn-ghost p-0 m-1"><HiDotsVertical/></label>
             <ul tabIndex={entry.date} className="dropdown-content menu p-1 shadow bg-secondary rounded-box w-52">
